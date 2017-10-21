@@ -24,7 +24,8 @@ public class HelloWorldHandler implements RequestHandler<Object, Object> {
 		try {
 			if (input instanceof LinkedHashMap) {
 				LinkedHashMap<Object, Object> inputRequest = (LinkedHashMap<Object, Object>) input;
-				LinkedHashMap<String, String> queryParams = (LinkedHashMap<String, String>) inputRequest.get("queryStringParameters");
+				LinkedHashMap<String, String> queryParams = (LinkedHashMap<String, String>) inputRequest
+						.get("queryStringParameters");
 				context.getLogger().log("queryParams: 	" + queryParams + "\n");
 
 				float loanAmount = Integer.parseInt(queryParams.get("loanAmount"));
@@ -34,11 +35,10 @@ public class HelloWorldHandler implements RequestHandler<Object, Object> {
 				context.getLogger().log("Interest Rate: " + interestRate + "\n");
 				context.getLogger().log("Loan Duration: " + duration + "\n");
 
-				float emi = loanAmount/duration;
+				float emi = loanAmount / duration;
+
 				StringBuilder response = new StringBuilder();
 				response.append("{ \"Easy Monthly Installment: \": \"" + emi + "\"}");
-				
-				headers.put("Content-Type", "application/json");
 				return new GatewayResponse(response.toString(), headers, HttpStatus.OK.value());
 			}
 			context.getLogger().log("Incorrect input type: " + input.getClass());
