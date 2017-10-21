@@ -15,6 +15,7 @@ import com.aws.codestar.projecttemplates.GatewayResponse;
  */
 public class HelloWorldHandler implements RequestHandler<Object, Object> {
 
+	@SuppressWarnings("unchecked")
 	public Object handleRequest(final Object input, final Context context) {
 
 		context.getLogger().log("Input to the Lambda: " + input + "\n");
@@ -22,15 +23,22 @@ public class HelloWorldHandler implements RequestHandler<Object, Object> {
 		headers.put("Content-Type", "application/json");
 		try {
 			if (input instanceof LinkedHashMap) {
-				@SuppressWarnings("unchecked")
-				LinkedHashMap<Object, Object> calculaionParam = (LinkedHashMap<Object, Object>) input;
-				context.getLogger().log("calculaionParam: " + calculaionParam.get("queryStringParameters") + "\n");
-				context.getLogger().log(
-						"calculaionParam getClass: " + calculaionParam.get("queryStringParameters").getClass() + "\n");
-				headers.put("Content-Type", "application/json");
-				
+				LinkedHashMap<Object, Object> inputRequest = (LinkedHashMap<Object, Object>) input;
+				LinkedHashMap<String, String> queryParams = (LinkedHashMap<String, String>) inputRequest.get("queryStringParameters");
+				context.getLogger().log("queryParams: 	" + queryParams + "\n");
+
+				float loanAmount = Integer.parseInt(queryParams.get("loanAmount"));
+				float interestRate = Integer.parseInt(queryParams.get("interestRate"));
+				float duration = Integer.parseInt(queryParams.get("duration"));
+				context.getLogger().log("Loan Amount:	" + loanAmount + "\n");
+				context.getLogger().log("Interest Rate: " + interestRate + "\n");
+				context.getLogger().log("Loan Duration: " + duration + "\n");
+
+				float emi = loanAmount/duration;
 				StringBuilder response = new StringBuilder();
-				response.append("{ \"Output\": \"" + calculaionParam.get("queryStringParameters") + "\"}");
+				response.append("{ \"Easy Monthly Installment: \": \"" + emi + "\"}");
+				
+				headers.put("Content-Type", "application/json");
 				return new GatewayResponse(response.toString(), headers, HttpStatus.OK.value());
 			}
 			context.getLogger().log("Incorrect input type: " + input.getClass());
