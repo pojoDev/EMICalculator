@@ -14,7 +14,7 @@ import com.aws.codestar.projecttemplates.GatewayResponse;
 public class HelloWorldHandler implements RequestHandler<Object, Object> {
 
     public Object handleRequest(final Object input, final Context context) {
-    	System.out.println("input: " + input);
+    	context.getLogger().log("input: " + input + "\n");
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         return new GatewayResponse("{ \"Output\": \"Hello World!\"}", headers, 200);
