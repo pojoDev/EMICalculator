@@ -28,9 +28,9 @@ public class HelloWorldHandler implements RequestHandler<Object, Object> {
 						.get("queryStringParameters");
 				context.getLogger().log("queryParams: 	" + queryParams + "\n");
 
-				float loanAmount = Integer.parseInt(queryParams.get("loanAmount"));
-				float interestRate = Integer.parseInt(queryParams.get("interestRate"));
-				float duration = Integer.parseInt(queryParams.get("duration"));
+				float loanAmount = Float.parseFloat(queryParams.get("loanAmount"));
+				float interestRate = Float.parseFloat(queryParams.get("interestRate"));
+				float duration = Float.parseFloat(queryParams.get("duration"));
 				context.getLogger().log("Loan Amount:	" + loanAmount + "\n");
 				context.getLogger().log("Interest Rate: " + interestRate + "\n");
 				context.getLogger().log("Loan Duration: " + duration + "\n");
